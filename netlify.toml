@@ -1,0 +1,10 @@
+[[headers]]
+  for = "/creatives/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    X-Robots-Tag = "noindex"
+
+[[headers]]
+  for = "/final-expense/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
