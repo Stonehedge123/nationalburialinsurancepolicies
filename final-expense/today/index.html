@@ -46,6 +46,17 @@
     s.dataset.tags = JSON.stringify({ landing_page: 'fe-today' });
     document.head.appendChild(s);
   })();
+  // A tap before the pool number arrives would dial the untracked backup number.
+  // Hold that tap for up to 1.5s until CallGrid assigns a number, then dial.
+  document.addEventListener('callgrid:numberAssigned', function (e) { window.__cgNum = e.detail && e.detail.phoneNumber; });
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href^="tel:"]');
+    if (!a || window.__cgNum || /8336314698/.test(a.getAttribute('href')) === false) return;
+    ev.preventDefault();
+    var done = false, go = function () { if (done) return; done = true; location.href = 'tel:' + (window.__cgNum || '+18336314698'); };
+    document.addEventListener('callgrid:numberAssigned', function () { setTimeout(go, 50); });
+    setTimeout(go, 1500);
+  });
 </script>
 <script>
 !(function (e, n, t, i, p, a, s) {
