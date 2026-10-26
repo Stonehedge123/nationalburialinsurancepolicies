@@ -4,8 +4,8 @@ Run: python build_fe_pages.py (from this folder)."""
 import io, os
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-TEL = 'tel:+18662758784'
-PHONE = '(866) 275-8784'
+TEL = 'tel:+18336314698'
+PHONE = '(833) 631-4698'
 
 HEAD = """<!DOCTYPE html>
 <html lang="en">
@@ -43,16 +43,19 @@ HEAD = """<!DOCTYPE html>
   @media (max-width:600px) {{ h1 {{ font-size:1.7rem; }} }}
 </style>
 <script>
-  window._rgba_tags = window._rgba_tags || [];
+  // CallGrid dynamic number insertion (campaign "NBIP FE NewsBreak", source "NBIP NewsBreak").
+  // URL parameters (utm_*, nb_cid, callback) are captured automatically; landing_page is passed as a tag.
   (function () {{
-    var q = new URLSearchParams(location.search), t = {{ landing_page: '{page}' }};
-    ['utm_source','utm_medium','utm_campaign','utm_content','nb_cid','callback'].forEach(function (k) {{
-      var v = q.get(k); if (v) t[k] = v.slice(0, 100);
-    }});
-    window._rgba_tags.push(t);
+    var s = document.createElement('script');
+    s.src = 'https://cdn.callgrid.com/callgrid.js';
+    s.async = true;
+    s.dataset.organizationId = 'cmqa4hp8c003x06k5iu7c2c0r';
+    s.dataset.campaignSourceId = 'cmvpmb7u403fm06ibc50q4my2';
+    s.dataset.targetPhoneNumber = '8336314698';
+    s.dataset.tags = JSON.stringify({{ landing_page: '{page}' }});
+    document.head.appendChild(s);
   }})();
 </script>
-<script src="//b-js.ringba.com/CA4c4c31e976634a1685172db22b4e8278" async></script>
 <script>
 !(function (e, n, t, i, p, a, s) {{
   e[i] ||
@@ -101,7 +104,6 @@ FOOT = """
       var label = a.classList.contains('bar') ? 'bar' : 'btn' + [].indexOf.call(document.querySelectorAll('a.cta'), a);
       if (!window.__tapped) {{ window.__tapped = {{}}; send('tap'); if (window.nbpix) nbpix('event', 'contact'); }}
       if (!window.__tapped[label]) {{ window.__tapped[label] = 1; send('tap_' + label); }}
-      window._rgba_tags.push({{ call_tap: label }});
     }}, true);
   }})();
   </script>

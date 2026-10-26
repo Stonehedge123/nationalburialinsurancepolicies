@@ -34,16 +34,19 @@
   @media (max-width:600px) { h1 { font-size:1.7rem; } }
 </style>
 <script>
-  window._rgba_tags = window._rgba_tags || [];
+  // CallGrid dynamic number insertion (campaign "NBIP FE NewsBreak", source "NBIP NewsBreak").
+  // URL parameters (utm_*, nb_cid, callback) are captured automatically; landing_page is passed as a tag.
   (function () {
-    var q = new URLSearchParams(location.search), t = { landing_page: 'fe-now' };
-    ['utm_source','utm_medium','utm_campaign','utm_content','nb_cid','callback'].forEach(function (k) {
-      var v = q.get(k); if (v) t[k] = v.slice(0, 100);
-    });
-    window._rgba_tags.push(t);
+    var s = document.createElement('script');
+    s.src = 'https://cdn.callgrid.com/callgrid.js';
+    s.async = true;
+    s.dataset.organizationId = 'cmqa4hp8c003x06k5iu7c2c0r';
+    s.dataset.campaignSourceId = 'cmvpmb7u403fm06ibc50q4my2';
+    s.dataset.targetPhoneNumber = '8336314698';
+    s.dataset.tags = JSON.stringify({ landing_page: 'fe-now' });
+    document.head.appendChild(s);
   })();
 </script>
-<script src="//b-js.ringba.com/CA4c4c31e976634a1685172db22b4e8278" async></script>
 <script>
 !(function (e, n, t, i, p, a, s) {
   e[i] ||
@@ -73,7 +76,7 @@
       <li>As little as $0.89 a day</li>
       <li>Coverage up to $25,000</li>
     </ul>
-    <a href="tel:+18662758784" class="cta">Tap to Call and See Your Rate<small>A licensed agent answers. Free, no obligation.</small></a>
+    <a href="tel:+18336314698" class="cta">Tap to Call and See Your Rate<small>A licensed agent answers. Free, no obligation.</small></a>
     <p class="note">Mon–Fri, 9am–6pm ET &middot; No obligation</p>
   </section>
 
@@ -82,7 +85,7 @@
     <p><a href="/privacy-policy.html">Privacy Policy</a> &middot; <a href="/terms-conditions.html">Terms &amp; Conditions</a></p>
   </div>
 
-  <a href="tel:+18662758784" class="bar">&#128222; Tap to Call and See Your Rate</a>
+  <a href="tel:+18336314698" class="bar">&#128222; Tap to Call and See Your Rate</a>
 
   <script>
   (function () {
@@ -103,7 +106,6 @@
       var label = a.classList.contains('bar') ? 'bar' : 'btn' + [].indexOf.call(document.querySelectorAll('a.cta'), a);
       if (!window.__tapped) { window.__tapped = {}; send('tap'); if (window.nbpix) nbpix('event', 'contact'); }
       if (!window.__tapped[label]) { window.__tapped[label] = 1; send('tap_' + label); }
-      window._rgba_tags.push({ call_tap: label });
     }, true);
   })();
   </script>
