@@ -175,9 +175,119 @@ NOW = """
   </section>
 """
 
+QUIZ = """
+  <style>
+    .bar { display:none; }
+    .bar.show { display:block; }
+    .quiz { max-width:640px; margin:0 auto; background:#fff; padding:1.25rem 1.25rem 2rem; text-align:center; }
+    .prog { height:8px; background:#e9e5da; border-radius:99px; overflow:hidden; margin:0 0 1.25rem; }
+    .prog i { display:block; height:100%; width:0; background:#2fbdaa; transition:width .4s ease; }
+    .step { display:none; animation:fadeIn .35s ease; }
+    .step.on { display:block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    .q { font-size:1.55rem; font-weight:800; color:#111; line-height:1.2; margin:.25rem 0 1.1rem; }
+    .qs { color:#666; font-size:.95rem; margin-bottom:.4rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+    .opt { display:block; width:100%; background:#fff; border:2px solid #2fbdaa; color:#1d3d6b; font:800 1.3rem/1.2 inherit; padding:1.05rem; border-radius:12px; margin:0 0 .75rem; cursor:pointer; }
+    .opt:active, .opt.pick { background:#2fbdaa; color:#fff; }
+    .checking { padding:1rem 0; }
+    .spin { width:64px; height:64px; border:6px solid #e8f7f4; border-top-color:#2fbdaa; border-radius:50%; margin:0 auto 1.25rem; animation:spin 1s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .checks2 { list-style:none; text-align:left; display:inline-block; font-size:1.1rem; line-height:2.1; }
+    .checks2 li { opacity:.35; transition:opacity .3s; }
+    .checks2 li.done { opacity:1; }
+    .checks2 li.done::before { content:"\\2713  "; color:#2fbdaa; font-weight:900; }
+    .checks2 li:not(.done)::before { content:"\\25CB  "; color:#bbb; }
+    .win { font-size:3rem; line-height:1; margin-bottom:.4rem; }
+    .good { display:inline-block; background:#e8f7f4; color:#1d6b5f; font-weight:800; padding:.4rem .9rem; border-radius:99px; margin-bottom:.75rem; }
+    .rh { font-size:1.7rem; font-weight:800; color:#111; line-height:1.2; margin-bottom:.6rem; }
+    .rp { font-size:1.15rem; color:#333; line-height:1.5; margin-bottom:.5rem; }
+    .hold { color:#b42318; font-weight:700; font-size:1rem; margin:.6rem 0 0; }
+    .pulse { animation:pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.03); } }
+    .trust { color:#666; font-size:.9rem; margin-top:1rem; }
+  </style>
+
+  <section class="quiz">
+    <div class="prog"><i id="bar"></i></div>
+
+    <div class="step on" data-s="1">
+      <div class="qs">Step 1 of 2 &middot; Takes 30 seconds</div>
+      <div class="q">See if you qualify for final expense coverage with no medical exam. How old are you?</div>
+      <button class="opt" data-k="age" data-v="50-59">50 &ndash; 59</button>
+      <button class="opt" data-k="age" data-v="60-69">60 &ndash; 69</button>
+      <button class="opt" data-k="age" data-v="70-79">70 &ndash; 79</button>
+      <button class="opt" data-k="age" data-v="80-85">80 &ndash; 85</button>
+    </div>
+
+    <div class="step" data-s="2">
+      <div class="qs">Step 2 of 2</div>
+      <div class="q">Are you male or female?</div>
+      <button class="opt" data-k="gender" data-v="male">Male</button>
+      <button class="opt" data-k="gender" data-v="female">Female</button>
+    </div>
+
+    <div class="step checking" data-s="3">
+      <div class="spin"></div>
+      <div class="q">Checking your eligibility&hellip;</div>
+      <ul class="checks2">
+        <li>Confirming age eligibility</li>
+        <li>Finding plans available in <span class="st">your state</span></li>
+        <li>Checking no-exam options</li>
+        <li>Locating a licensed agent</li>
+      </ul>
+    </div>
+
+    <div class="step" data-s="4">
+      <div class="win">&#127881;</div>
+      <div class="good">Good news!</div>
+      <div class="rh">You may qualify for coverage starting at $0.89 a day.</div>
+      <p class="rp">No medical exam. Rates locked for life on most plans. A licensed agent is standing by to show you your exact rate.</p>
+      """ + CTA.replace('class="cta"', 'class="cta pulse"') + """
+      <p class="hold">Your spot is reserved for the next 10 minutes.</p>
+      <p class="trust">A licensed agent answers right away. Free, no obligation.</p>
+    </div>
+  </section>
+
+  <script>
+  (function () {
+    var s = 1, bar = document.getElementById('bar');
+    function track(e) {
+      var q = new URLSearchParams(location.search), c = (q.get('utm_campaign') || '') + '_' + (q.get('utm_content') || '');
+      var u = 'https://seniorhomewarranties.com/api/t?e=' + e + '&p=fe-quiz&c=' + encodeURIComponent(c);
+      try { if (!navigator.sendBeacon(u)) throw 0; } catch (x) { fetch(u, { mode: 'no-cors', keepalive: true }); }
+    }
+    function show(n) {
+      s = n;
+      document.querySelectorAll('.step').forEach(function (el) { el.classList.toggle('on', +el.dataset.s === n); });
+      bar.style.width = ({1: 15, 2: 50, 3: 80, 4: 100})[n] + '%';
+      scrollTo(0, 0);
+    }
+    try {
+      fetch('https://ipapi.co/json/').then(function (r) { return r.json(); }).then(function (g) {
+        if (g && g.region) document.querySelectorAll('.st').forEach(function (el) { el.textContent = g.region; });
+      }).catch(function () {});
+    } catch (x) {}
+    document.querySelectorAll('.opt').forEach(function (b) {
+      b.addEventListener('click', function () {
+        b.classList.add('pick');
+        track('q_' + b.dataset.k);
+        setTimeout(function () {
+          if (s === 1) return show(2);
+          show(3);
+          var items = document.querySelectorAll('.checks2 li');
+          items.forEach(function (li, i) { setTimeout(function () { li.classList.add('done'); }, 700 * (i + 1)); });
+          setTimeout(function () { show(4); track('result'); document.querySelector('.bar').classList.add('show'); }, 700 * items.length + 600);
+        }, 250);
+      });
+    });
+  })();
+  </script>
+"""
+
 for slug, page, title, body in [
     ("today", "fe-today", "Still Got It at 50+? Your Rate Will Never Be Lower Than Today", TODAY),
     ("now", "fe-now", "Final Expense Coverage for Ages 50–85 | See Your Rate", NOW),
+    ("quiz", "fe-quiz", "See If You Qualify | Final Expense Coverage for Ages 50–85", QUIZ),
 ]:
     os.makedirs(f"final-expense/{slug}", exist_ok=True)
     html = HEAD.format(title=title, page=page) + body + FOOT.format(tel=TEL, page=page)
