@@ -114,7 +114,8 @@
 
     <div class="step on" data-s="1">
       <div class="qs">Step 1 of 2 &middot; Takes 30 seconds</div>
-      <div class="q">See if you qualify for final expense coverage with no medical exam. How old are you?</div>
+      <div class="q" id="q1">Find out how to get a final expense plan with up to $40,000 in coverage. How old are you?</div>
+      <script>(function () { var a = (new URLSearchParams(location.search).get('utm_content') || '').toUpperCase(), h = { VET: 'The VA burial benefit pays $1,032. See what you may qualify for to cover the rest. How old are you?', ST: 'See the 2026 burial coverage available in your state. How old are you?' }; for (var k in h) if (a.indexOf(k) === 0) document.getElementById('q1').textContent = h[k]; })();</script>
       <button class="opt" data-k="age" data-v="50-59">50 &ndash; 59</button>
       <button class="opt" data-k="age" data-v="60-69">60 &ndash; 69</button>
       <button class="opt" data-k="age" data-v="70-79">70 &ndash; 79</button>
